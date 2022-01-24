@@ -37,9 +37,9 @@ candidates = [
 
 def find_top_20(candidates: dict):
     """
-    Функция обрабатывает данные студентов и возвращает имя список с колчичеством баллом отсортированными по убыванию
+    Функция обрабатывает данные студентов и возвращает имя список с количеством баллом отсортированными по убыванию
     :param candidates словарь с данными студентов:
-    :return отсортированый список 21 студента: :
+    :return отсортированый список с 21 студентом: :
     """
     lens = 0
     total_score = []
@@ -68,17 +68,17 @@ def validation():
         # Если значение равны получаем имена и результаты профильных предметов
         for candidats in candidates:
             if candidats["name"] == data[19][0]:
-                name_studen1 = candidats["name"]
+                name_studen20 = candidats["name"]
                 math = candidats["scores"]["math"]
                 computer_science = candidats["scores"]["computer_science"]
-                student1_profil = math + computer_science
+                student20_profil = math + computer_science
             elif candidats["name"] == data[20][0]:
-                name_studen2 = candidats["name"]
+                name_studen21 = candidats["name"]
                 math = candidats["scores"]["math"]
                 computer_science = candidats["scores"]["computer_science"]
-                student2_profil = math + computer_science
+                student21_profil = math + computer_science
         # Сравниваеи результаты по  профильным предметам
-        if student1_profil < student2_profil:
+        if student20_profil < student21_profil:
             # Если студент 21 из списка набрал больше баллов по профильныи предметам меняем его с 20
             result = []
             result.append(data[20])
@@ -87,7 +87,7 @@ def validation():
             data.extend(result)
             # Выводим сообщение о замене
             print(
-                f'ВАЖНО!!!!!!!Студент  {name_studen1} был заменен студентом {name_studen2} так как '
+                f'ВАЖНО!!!!!!!Студент  {name_studen20} был заменен студентом {name_studen21} так как '
                 f'по профильным предметам набрал меньше баллов')
             return data
     else:
