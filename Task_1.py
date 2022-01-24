@@ -51,7 +51,7 @@ def find_top_20(candidates: dict):
         computer_science = candidate["scores"]["computer_science"]
         extra_scores = candidate["extra_scores"]
         total_score.append((name, math + russian_language + computer_science + extra_scores))
-        total_score = sorted(total_score, key=lambda x: x[1], reverse=True)
+    total_score = sorted(total_score, key=lambda x: x[1], reverse=True)
     return total_score[:21:]
 
 
