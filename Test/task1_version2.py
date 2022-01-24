@@ -35,68 +35,50 @@ candidates = [
 ]
 
 
-def find_top_20(candidates: dict):
+def calculate_total_score(candidates: dict) -> list:
     """
     Функция обрабатывает данные студентов и возвращает имя список с колчичеством баллом отсортированными по убыванию
     :param candidates словарь с данными студентов:
     :return отсортированый список 21 студента: :
     """
-    lens = 0
     total_score = []
     for candidate in candidates:
-        lens += 1
-        name = candidate["name"]
-        math = candidate["scores"]["math"]
-        russian_language = candidate["scores"]["russian_language"]
-        computer_science = candidate["scores"]["computer_science"]
-        extra_scores = candidate["extra_scores"]
+        name = candidate.get("name", "")
+        math = candidate.get("scores", 0).get("math", 0)
+        russian_language = candidate.get("scores", 0).get("russian_language", 0)
+        computer_science = candidate.get("scores", 0).get("computer_science", 0)
+        extra_scores = candidate.get("extra_scores", 0)
         total_score.append((name, math + russian_language + computer_science + extra_scores))
-        total_score = sorted(total_score, key=lambda x: x[1], reverse=True)
-    return total_score[:21:]
+    return sorted(total_score, key=lambda x: x[1], reverse=True)
 
 
-def validation():
+def find_top_20(candidates: dict) -> list:
     """
     Функция поверки результатов отбора если 20 и 21 студент имеют одинаковое количества баллов то проходит проверка
     на профильные предменты
     :return отсортированый список студентов:
     """
-    # Получение списка облаботанного функцией find_top_20
-    data = find_top_20(candidates)
-    # Сравнение результатов 20 и 21 студентов
-    if data[19][1] == data[20][1]:
-        # Если значение равны получаем имена и результаты профильных предметов
-        for candidats in candidates:
-            if candidats["name"] == data[19][0]:
-                name_studen1 = candidats["name"]
-                math = candidats["scores"]["math"]
-                computer_science = candidats["scores"]["computer_science"]
-                student1_profil = math + computer_science
-            elif candidats["name"] == data[20][0]:
-                name_studen2 = candidats["name"]
-                math = candidats["scores"]["math"]
-                computer_science = candidats["scores"]["computer_science"]
-                student2_profil = math + computer_science
-        # Сравниваеи результаты по  профильным предметам
-        if student1_profil < student2_profil:
-            # Если студент 21 из списка набрал больше баллов по профильныи предметам меняем его с 20
-            result = []
-            result.append(data[20])
-            data.pop(20)
-            data.pop(19)
-            data.extend(result)
-            # Выводим сообщение о замене
-            print(
-                f'ВАЖНО!!!!!!!Студент  {name_studen1} был заменен студентом {name_studen2} так как '
-                f'по профильным предметам набрал меньше баллов')
-            return data
-    else:
-        return data[:20:]
+    total_score = calculate_total_score(candidates)
+    conflicated_condidate = None
+
+    if total_score[20] and total_score[21] and total_score[20][1] == total_score[21][1]:
+        conflicated_candidates = [candidate for candidate in total_score[20:] if candidate[1] == total_score[20][1]]
+        for candiate in conflicated_candidates:
+            name = candiate[0]
+            math = candidates[name]["scores"]["math"]
+            computer_science = candidates[name]["scores"]["computer_science"]
+            if not conflicated_condidate or conflicated_condidate[1] < math + computer_science:
+                conflicated_condidate = (name, math + computer_science, candiate[1])
+
+    if conflicated_condidate:
+        total_score[20] = (conflicated_condidate[0], conflicated_condidate[1])
+    return total_score[:20]
+
 
 
 if __name__ == '__main__':
     i = 1
-    sor_data = validation()
+    sor_data = find_top_20(candidates)
     for data in sor_data:
         print(f'Студент {i} : Имя {data[0]}  с результатом {data[1]}')
         i += 1
