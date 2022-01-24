@@ -1,3 +1,5 @@
 venv
 .idea
 Test
+.DS_Store
+top_student.csv
