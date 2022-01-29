@@ -33,12 +33,8 @@ def find_athlets(know_english: list, sportsmen: list, more_than_20_years: list):
     :param more_than_20_years: информация о тех, кто старше 20 лет.
     :return:
     """
-    step1 = list(set(know_english) & set(sportsmen))
-    result = list(set(step1) & set(more_than_20_years))
-    return result
+    return list(set(know_english) & set(sportsmen) & set(more_than_20_years))
 
 
 if __name__ == '__main__':
-    result = find_athlets(know_english, sportsmen, more_than_20_years)
-    for mens in result:
-        print(f'Под параметры подходит: {mens}')
+    print(f'Под параметры подходит: {", ".join(find_athlets(know_english, sportsmen, more_than_20_years))}')
